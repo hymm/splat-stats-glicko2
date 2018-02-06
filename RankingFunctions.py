@@ -105,8 +105,8 @@ def Addtxt(TxtFile):
     return TxtFile
 
 def GetDataTxt(TxtFile, Dict):
-    """Opens TxtFile, adds all players to Dict along with default values, 
-adds TxtFile a player appears in to their Dict entry, and returns a list with the results 
+    """Opens TxtFile, adds all players to Dict along with default values,
+adds TxtFile a player appears in to their Dict entry, and returns a list with the results
 of each match in TxtFile. Each match should formatted as P1 P1wins P2 P2wins,
 with each match separated by a carriage return (a new line).
 TxtFiles: a string; the .txt file to be read.
@@ -115,7 +115,7 @@ Dict: one of the Title dictionaries (recommended to use the TitleDict function).
     if 'ResultsFolder' in globals():
         TxtFile = ResultsFolder + TxtFile
     MatchResults = []
-    f = open(TxtFile)
+    f = open(TxtFile, encoding='utf-8')
     File = f.read()
     f.close()
     for NumFix in NumFixes:
@@ -541,7 +541,7 @@ SortedByTie: a string in Sortings; the method of sorting in the event of a tie.
 Example: WriteCSVRankings(['Melee', 'Sm4sh'], 'MeleeSm4shRankings', TitleMin = 2, SortedBy = 'Low', SortedByTie = 'Middle', LinesBetween = 2)"""
     if CSVFile[-4:] != '.csv':
         CSVFile = CSVFile + '.csv'
-    f = open(CSVFile, 'w', newline='')
+    f = open(CSVFile, 'w', newline='', encoding='utf-8')
     spamwriter = csv.writer(f, quoting=csv.QUOTE_MINIMAL)
     if type(IncludedTitles) != list:
         IncludedTitles = [IncludedTitles]
@@ -602,7 +602,7 @@ def ToTag(Person):
 Person: a string."""
     if Person not in TagDict:
         Person = NameDict[Person]
-    return Person    
+    return Person
 
 def SingleRanking(Person, Title, TitleMin = DefaultTitleMin, SortedBy = DefaultSort, SortedByTie = DefaultSortTie):
     """Returns the ranking info of Person in Title, where their rank within title is determined with the sorting as indicated.
@@ -674,7 +674,7 @@ def FileList(Person):
             for File in TitleDict(Title)[Person][4]:
                 PersonFileList.append(File)
     return PersonFileList
-    
+
 def NoNames(PersonList = [], Files = True):
     """Prints the names of all tags with no name, as well as which files they appear in, if indicated.
 PersonList: the tags to be checked. If left as the default, all tags that have been processed will be checked.

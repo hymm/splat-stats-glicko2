@@ -5,6 +5,7 @@ from random import shuffle
 from os import path
 from inspect import signature, getdoc
 from re import compile, split
+import os
 import csv
 
 from hmc_urllib import getHTML
@@ -121,15 +122,15 @@ Dict: one of the Title dictionaries (recommended to use the TitleDict function).
     for NumFix in NumFixes:
         File = File.replace(NumFix[0], NumFix[1])
     FileResults = File.splitlines()
-    FileResults = [split(r'(\d+)', s)[0:-1] for s in FileResults]
+    FileResults = [split(r'\s(\d+)-(\d+)\s', s) for s in FileResults]
     for i in range(len(FileResults)):
-        FileResults[i][0] = FileResults[i][0][0:-1]
-        FileResults[i][2] = FileResults[i][2][1:-1]
-    for i in range(len(FileResults)):
+        """Replace name"""
         FileResults[i][0] = Replacements(FileResults[i][0])
+        """cast game result to integer"""
         FileResults[i][1] = int(FileResults[i][1])
-        FileResults[i][2] = Replacements(FileResults[i][2])
-        FileResults[i][3] = int(FileResults[i][3])
+        tempCount = FileResults[i][2]
+        FileResults[i][2] = Replacements(FileResults[i][3])
+        FileResults[i][3] = int(tempCount)
     for CurrentMatch in FileResults:
         AddPerson(CurrentMatch[0], Dict)
         AppendFile(CurrentMatch[0], Dict, path.basename(TxtFile)[0:-4])
@@ -1087,3 +1088,9 @@ def UsefulFunctions():
         FunctionInfo(Function)
         if Function != UsefulFunctionList[-1]:
             print()
+
+def ProcessFolder(path):
+    """processes all the txt files in a folder"""
+    for file in os.listdir(path):
+        currentFile = os.path.join(path, file)
+        ProcessRankings([currentFile[0:-4]], 'Melee');

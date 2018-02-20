@@ -22,6 +22,8 @@ WriteCSVRankings('Melee','Test2')
 
 ### Results format
 txt Files must be saved in `utf-8`.
+
+Format:
 ```
 <Player 1> 3-2 <Player 2>
 ```
@@ -31,7 +33,7 @@ Example:
 Konton Knights 1-3 なめこパフェ
 ```
 
-## License
+## MIT License
 
 Copyright (c) 2018 github.com/hymm, 2015 Abraham Schulte
 

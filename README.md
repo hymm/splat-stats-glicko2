@@ -4,7 +4,7 @@ This code was taken from [SSB|Sylar](https://smashboards.com/threads/glicko2-for
 and modified for use for [Splat Stats](https://twitter.com/SplatStats).
 
 ## Usage
-
+Run
 ```
 python <configfile>.py
 ```
@@ -18,6 +18,17 @@ SmashRankingsCalculator.py
 ```python
 ProcessRankingsFolder('season2week3')
 WriteCSVRankings('Melee','Test2')
+```
+
+### Results format
+txt Files must be saved in `utf-8`.
+```
+<Player 1> 3-2 <Player 2>
+```
+
+Example: 
+```
+Konton Knights 1-3 なめこパフェ
 ```
 
 ## License

@@ -23,6 +23,7 @@ WriteCSVRankings('Melee','Test2')
 ## License
 
 Copyright (c) 2018 github.com/hymm
+
 Copyright (c) 2015 Abraham Schulte
 
 Permission is hereby granted, free of charge, to any person

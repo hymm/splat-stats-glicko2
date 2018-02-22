@@ -6,6 +6,11 @@ and modified for use for [Splat Stats](https://twitter.com/SplatStats).
 This program works by creating a script to read csv files in a folder and outputs
 the rankings to another csv file.
 
+## Requirements
+
+1. Have [Python 3](https://www.python.org/) installed and included in your PATH environment variables.
+2. Some type of text editor.  like notepad.exe or [atom.io](https://atom.io/)
+
 ## Configuration
 
 ### Configure the base folder to read files from
@@ -25,7 +30,7 @@ Csv files are expected to be saved as `utf-8`.
 The file must contain a header row with columns named `Team 1`, `Team 2`,
 `Score 1`, and `Score 2`.  Other columns are ignored.
 
-Example:
+**Example:**
 ```
 Team 1,Score 1,Team 2,Score 2,Phase
 Uprising_SP,0,Evisceration,2,Winners R1
@@ -48,7 +53,7 @@ ProcessRankings(<array of result filenames>, 'Splatoon')
 WriteCSVRankings('Splatoon', <ranking_filename>)
 ```
 
-Example:
+**Example:**
 
 Season2-INT.py
 
@@ -64,12 +69,12 @@ WriteCSVRankings('Splatoon', 'Season1Week1')
 The rankings will be put in `Season1Week1.csv` in the same folder as the script.
 
 ## Running the script
-Run
+Open a command line and run the command:
 ```
 python <config filename>.py
 ```
 
-Example:
+**Example:**
 ```
 python Season2-INT.py
 ```

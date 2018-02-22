@@ -1,5 +1,6 @@
 ##ResultsFolder = 'C:\\Users\\MasahiroSakurai\\Documents\\SmashStuff'      # Make sure to have double backslashes file paths.
     # ResultsFolder may be left undefined if result .txt files are in the same place as the Python code
+ResultsFolder = '.\\season2\\'
 DefaultTitleMin = 2
 DefaultSort = 'Low'
 DefaultSortTie = 'Middle'
@@ -29,7 +30,7 @@ NameDict = {}
 for Tag in TagDict:
     NameDict[TagDict[Tag]] = Tag
 
-    
+
 # Any tags with numbers in them should go here, with the actual tag, then the tag with numbers written out.
 # Note that tags of the form A1 or AA1 (that is, a capital letter followed by a number or two capital letters
 # followed by a number) do not always process properly, and additional coding may be needing to avoid errors.

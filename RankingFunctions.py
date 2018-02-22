@@ -122,8 +122,12 @@ Dict: one of the Title dictionaries (recommended to use the TitleDict function).
     for NumFix in NumFixes:
         File = File.replace(NumFix[0], NumFix[1])
     FileResults = File.splitlines()
-    FileResults = [split(r'\s(\d+)-(\d+)\s', s) for s in FileResults]
+    FileResults = [split(r'\s+(\d+)-(\d+)\s+', s) for s in FileResults]
     for i in range(len(FileResults)):
+        if len(FileResults[i]) < 3:
+            raise ValueError(TxtFile + str(FileResults[i]))
+
+
         """Replace name"""
         FileResults[i][0] = Replacements(FileResults[i][0])
         """cast game result to integer"""

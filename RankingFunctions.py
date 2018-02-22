@@ -37,13 +37,14 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 """
 
-Titles = ['Melee', 'PM', 'Sm4sh', 'SSB', 'Brawl']
+Titles = ['Melee', 'PM', 'Sm4sh', 'SSB', 'Brawl', 'Splatoon']
 Sortings = ['Bottom', 'Low', 'Middle']
 SSBPersonDict = {}
 MeleePersonDict = {}
 PMPersonDict = {}
 BrawlPersonDict = {}
 Sm4shPersonDict = {}
+SplatoonPersonDict = {}
 
 def TitleDict(Title):
     """Gives the dictionary associated with Title.
@@ -58,6 +59,8 @@ Title: a string ('Melee', 'PM', 'Sm4sh', 'SSB', or 'Brawl')."""
         Dict = BrawlPersonDict
     if Title == 'Sm4sh':
         Dict = Sm4shPersonDict
+    if Title == 'Splatoon':
+        Dict = SplatoonPersonDict
     return Dict
 
 def AddPerson(Person, Dict, Rating = DefaultRating, RD = DefaultRD, Vol = DefaultVol):
@@ -104,6 +107,43 @@ def Addtxt(TxtFile):
     if TxtFile[-4:] != '.txt':
         TxtFile = TxtFile + '.txt'
     return TxtFile
+
+def AddCsv(CsvFilename):
+    if CsvFilename[-4:] != '.csv':
+        CsvFilename = CsvFilename + '.csv'
+    return CsvFilename
+
+def GetDataCsv(filename, Dict):
+    """Opens 'filename' csv, adds all players to 'Dict' along with default values,
+adds 'filename' a player appears in to their Dict entry, and returns a list with the results
+of each match in 'filename'. Columns in 'filename' should be labeled 'Team 1', 'Team 2', ,
+with each match separated by a carriage return (a new line).
+TxtFiles: a string; the .txt file to be read.
+Dict: one of the Title dictionaries (recommended to use the TitleDict function)."""
+    csvFilename = AddCsv(filename)
+    if 'ResultsFolder' in globals():
+        csvFilename = ResultsFolder + csvFilename
+    MatchResults = []
+    f = open(csvFilename, encoding='utf-8')
+    dataDict = csv.DictReader(f)
+
+    FileResults = []
+    for row in dataDict:
+        tempList = []
+        tempList.append(Replacements(row['Team 1']))
+        tempList.append(int(row['Score 1']))
+        tempList.append(Replacements(row['Team 2']))
+        tempList.append(int(row['Score 2']))
+        FileResults.append(tempList)
+
+    for CurrentMatch in FileResults:
+        AddPerson(CurrentMatch[0], Dict)
+        AppendFile(CurrentMatch[0], Dict, path.basename(filename)[0:-4])
+        AddPerson(CurrentMatch[2], Dict)
+        AppendFile(CurrentMatch[2], Dict, path.basename(filename)[0:-4])
+    MatchResults.append(FileResults)
+    f.close()
+    return FileResults
 
 def GetDataTxt(TxtFile, Dict):
     """Opens TxtFile, adds all players to Dict along with default values,
@@ -215,8 +255,7 @@ the result, and the tag of the opponent, just in case that is ever needed in the
 and once as a loss for the loser.
 TxtFile: a string; the file to read.
 Dict: one of the Title dictionaries (recommended to use the TitleDict function)."""
-    TxtFile = Addtxt(TxtFile)
-    MatchResults = GetDataTxt(TxtFile, Dict)
+    MatchResults = GetDataCsv(TxtFile, Dict)
     TitleResults = {}
     for i in range(len(MatchResults)):
         if MatchResults[i][0] not in TitleResults:

@@ -7,6 +7,7 @@ from inspect import signature, getdoc
 from re import compile, split
 import os
 import csv
+from fuzzywuzzy import process
 
 from hmc_urllib import getHTML
 from RankingSettings import *       # Imports the dictionary of tags with names as well as global settings
@@ -116,9 +117,9 @@ def AddCsv(CsvFilename):
 def GetDataCsv(filename, Dict):
     """Opens 'filename' csv, adds all players to 'Dict' along with default values,
 adds 'filename' a player appears in to their Dict entry, and returns a list with the results
-of each match in 'filename'. Columns in 'filename' should be labeled 'Team 1', 'Team 2', ,
-with each match separated by a carriage return (a new line).
-TxtFiles: a string; the .txt file to be read.
+of each match in 'filename'. Columns in 'filename' should be labeled 'Team 1', 'Team 2',
+'Score 1', and 'Score 2'
+filename: a string; the .csv file to be read.
 Dict: one of the Title dictionaries (recommended to use the TitleDict function)."""
     csvFilename = AddCsv(filename)
     if 'ResultsFolder' in globals():
@@ -1137,3 +1138,25 @@ def ProcessFolder(path):
     for file in os.listdir(path):
         currentFile = os.path.join(path, file)
         ProcessRankings([currentFile[0:-4]], 'Melee');
+
+def FuzzyMatch(filename, cutoff=80):
+    """Use this to find duplicates."""
+    # get list of team names
+    f = open(AddCsv(filename), encoding='utf-8')
+    next(f, None)
+    dataDict = csv.DictReader(f)
+    teamList = [row['Tag'].lower() for row in dataDict]
+    output = {teamName: process.extractWithoutOrder(teamName, teamList, score_cutoff=cutoff) for teamName in teamList[:-1]}
+    duplicatesFound = False
+    for team in output:
+        matches = []
+        for match in output[team]:
+            if (match[0] != team):
+                matches.append(match)
+
+        if len(matches) > 0:
+            duplicatesFound = True
+            print(team + ': ' + str(matches))
+
+    if (not duplicatesFound):
+        print('No duplicates found at cutoff=' + str(cutoff))

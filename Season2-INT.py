@@ -12,7 +12,7 @@ from RankingFunctions import *
 # 01-02/2014
 ##ProcessRankings(['Apex 2014'], 'Melee')
 
-
+print('Start.')
 #Week 1
 #ProcessRankings(['Tick Tock Tuesdays 9'],'Melee')
 ProcessRankings(['2018-01-13_-_Son_Of_A_Squid_5_-_Matchups'],'Splatoon')
@@ -20,7 +20,9 @@ ProcessRankings(['2018-01-21_-_SplatChampionship_2018_-winter-_-_Matchups_1'],'S
 
 #ShowRankings('Melee')
 WriteCSVRankings('Splatoon','Test3')
+FuzzyMatch('Test3', cutoff=80)
 #PersonRankings('Ink Soup')
+print('Done.')
 
 #UsefulFunctions()       # Run this to print all the useful functions as well as information about each.
 ##UsefulFunctionsListed() # Run this to print all the useful functions without the headers or additional information.

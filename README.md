@@ -11,6 +11,12 @@ the rankings to another csv file.
 1. Have [Python 3](https://www.python.org/) installed and included in your PATH environment variables.
 2. Some type of text editor.  like notepad.exe or [atom.io](https://atom.io/)
 
+## Installation
+install some modules
+```
+pip install -r requirements.txt
+```
+
 ## Configuration
 
 ### Configure the base folder to read files from

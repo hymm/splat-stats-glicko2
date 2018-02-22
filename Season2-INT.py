@@ -20,7 +20,7 @@ ProcessRankings(['2018-01-21_-_SplatChampionship_2018_-winter-_-_Matchups_1'],'S
 
 #ShowRankings('Melee')
 WriteCSVRankings('Splatoon','Test3')
-FuzzyMatch('Test3', cutoff=80)
+FuzzyMatch('Test3', cutoff=50)
 #PersonRankings('Ink Soup')
 print('Done.')
 

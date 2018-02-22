@@ -51,6 +51,10 @@ ProcessRankings(<array of result filenames>, 'Splatoon')
 
 # Calculate the rankings and write to csv file
 WriteCSVRankings('Splatoon', <ranking_filename>)
+
+# optional step, checks for duplicates and outputs possible matches to console
+# cutoff of 0 returns all possible matches, 100 would return only exact matches
+FuzzyMatch(<ranking_filename>, cutoff=80)
 ```
 
 **Example:**

@@ -1139,23 +1139,27 @@ def ProcessFolder(path):
         currentFile = os.path.join(path, file)
         ProcessRankings([currentFile[0:-4]], 'Melee');
 
-def FuzzyMatch(filename, cutoff=80):
+def FuzzyMatch(filename, cutoff=0):
     """Use this to find duplicates."""
-    # get list of team names
     f = open(AddCsv(filename), encoding='utf-8')
-    next(f, None)
+    next(f, None) # skip first header row
     dataDict = csv.DictReader(f)
     teamList = [row['Tag'].lower() for row in dataDict]
     output = {teamName: process.extractWithoutOrder(teamName, teamList, score_cutoff=cutoff) for teamName in teamList[:-1]}
     duplicatesFound = False
     for team in output:
         matches = []
+        firstMatch = False
         for match in output[team]:
-            if (match[0] != team):
+            if (match[0] == team and not firstMatch):
+                firstMatch = True
+            else:
                 matches.append(match)
 
         if len(matches) > 0:
-            duplicatesFound = True
+            if not duplicatesFound:
+                duplicatesFound = True
+                print('Duplicates found:')
             print(team + ': ' + str(matches))
 
     if (not duplicatesFound):

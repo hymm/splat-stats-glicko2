@@ -129,13 +129,19 @@ Dict: one of the Title dictionaries (recommended to use the TitleDict function).
     dataDict = csv.DictReader(f)
 
     FileResults = []
-    for row in dataDict:
-        tempList = []
-        tempList.append(Replacements(row['Team 1']))
-        tempList.append(int(row['Score 1']))
-        tempList.append(Replacements(row['Team 2']))
-        tempList.append(int(row['Score 2']))
-        FileResults.append(tempList)
+    for i, row in enumerate(dataDict):
+        try:
+            tempList = []
+            tempList.append(Replacements(row['Team 1']))
+            tempList.append(int(row['Score 1']))
+            tempList.append(Replacements(row['Team 2']))
+            tempList.append(int(row['Score 2']))
+            FileResults.append(tempList)
+        except:
+            print("Error in file %s on row %i" % (filename, i + 2))
+            print(row)
+            raise
+
 
     for CurrentMatch in FileResults:
         AddPerson(CurrentMatch[0], Dict)

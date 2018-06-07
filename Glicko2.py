@@ -96,7 +96,7 @@ class Player:
         """
         i = 0
         iteration_limit = 1000000
-        EPSILON = 0 #0.00001
+        EPSILON = 0.00001
         delta = self._delta(rating_list, RD_list, outcome_list, v)
         a = log(pow(self.vol, 2))
         tau = self._tau

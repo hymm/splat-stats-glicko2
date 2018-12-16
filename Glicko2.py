@@ -88,39 +88,49 @@ class Player:
         self.__rating += pow(self.__rd, 2) * tempSum
 
 
+    def _f(self, x, a, rating_list, RD_list, outcome_list, v):
+        nominator_1 = exp(x)*(self._delta(rating_list, RD_list, outcome_list, v)**2-self.__rating**2-v-exp(x))
+        denominator_1 = 2*(self.__rating**2 + v + exp(x))**2
+        term_1 = nominator_1/denominator_1
+        term_2 = (x-a)/self._tau**2
+        return term_1-term_2
+
+
     def _newVol(self, rating_list, RD_list, outcome_list, v):
         """ Calculating the new volatility as per the Glicko2 system.
 
         _newVol(list, list, list) -> float
 
         """
-        i = 0
-        iteration_limit = 1000000
-        EPSILON = 0.00001
-        delta = self._delta(rating_list, RD_list, outcome_list, v)
-        a = log(pow(self.vol, 2))
-        tau = self._tau
-        x0 = a
-        x1 = 0
+        A = a = log(self.vol**2)
+        epsilon = 0.000001
 
-        while abs(x0 - x1) > EPSILON or i > iteration_limit:
-            # New iteration, so x(i) becomes x(i-1)
-            i = i + 1
-            x0 = x1
-            d = pow(self.__rating, 2) + v + exp(x0)
-            h1 = -(x0 - a) / pow(tau, 2) - 0.5 * exp(x0) \
-            / d + 0.5 * exp(x0) * pow(delta / d, 2)
-            h2 = -1 / pow(tau, 2) - 0.5 * exp(x0) * \
-            (pow(self.__rating, 2) + v) \
-            / pow(d, 2) + 0.5 * pow(delta, 2) * exp(x0) \
-            * (pow(self.__rating, 2) + v - exp(x0)) / pow(d, 3)
-            x1 = x0 - (h1 / h2)
+        delta_squared = self._delta(rating_list, RD_list, outcome_list, v) ** 2
 
-        if i > iteration_limit:
-            raise Exception("interation limit exceeded when calculating volatility")
+        if delta_squared > (self.__rating ** 2 + v):
+            B = log(delta_squared - self.__rating ** 2 - v)
+        else:
+            k = 1
+            while self._f(a - k * self._tau, a, rating_list, RD_list, outcome_list, v) < 0:
+                k += 1
+            B = a - k * self._tau
+        f_A = self._f(A, a, rating_list, RD_list, outcome_list, v)
+        f_B = self._f(B, a, rating_list, RD_list, outcome_list, v)
 
+        while abs(B - A) > epsilon:
+            C = A + ((A - B) * f_A) / (f_B - f_A)
+            f_C = self._f(C, a, rating_list, RD_list, outcome_list, v)
 
-        return exp(x1 / 2)
+            if f_C * f_B < 0:
+                A = B
+                f_A = f_B
+            else:
+                f_A /= 2
+
+            B = C
+            f_B = f_C
+
+        return exp(A / 2)
 
     def _delta(self, rating_list, RD_list, outcome_list, v):
         """ The delta function of the Glicko2 system.
